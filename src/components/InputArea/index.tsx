@@ -1,7 +1,11 @@
 import React from 'react';
 import { Input } from './styles';
 
-function InputArea(inputValue: string) {
+interface IInputProps {
+  inputValue: string;
+}
+
+function InputArea({ inputValue }: IInputProps) {
   return <Input value={inputValue} />;
 }
 

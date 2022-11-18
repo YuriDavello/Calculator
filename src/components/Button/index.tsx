@@ -3,14 +3,14 @@ import { KeyNumber, Operator, Equal } from './styles';
 
 interface IButtonProps {
   value: string;
-  input: string;
-  setInput: (inputValue: string) => void;
+  inputValue: string;
+  setInput: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const operators = ['*', '/', '+', '-'];
 const notNumberAndNotOperators = ['C', '.'];
 
-function Button({ value, setInput, input }: IButtonProps) {
+function Button({ value, setInput, inputValue }: IButtonProps) {
   function isNumberOrNotOperator() {
     if (!isNaN(Number(value)) || notNumberAndNotOperators.includes(value))
       return true;
@@ -24,7 +24,7 @@ function Button({ value, setInput, input }: IButtonProps) {
     return false;
   }
   return isNumberOrNotOperator() ? (
-    <KeyNumber onClick={() => setInput(input + value)}>{value}</KeyNumber>
+    <KeyNumber onClick={() => setInput(inputValue + value)}>{value}</KeyNumber>
   ) : isEqual() ? (
     <Equal>{value}</Equal>
   ) : (

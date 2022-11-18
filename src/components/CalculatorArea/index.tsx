@@ -8,7 +8,7 @@ function CalculatorArea() {
   return (
     <Container>
       <InputArea inputValue={inputValue} />
-      <Keys setInputValue={setInputValue} />
+      <Keys setInput={setInputValue} inputValue={inputValue} />
     </Container>
   );
 }
