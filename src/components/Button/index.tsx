@@ -1,6 +1,8 @@
 import React from 'react';
 import { KeyNumber, Operator, Equal } from './styles';
 
+import { evaluate } from 'mathjs';
+
 interface IButtonProps {
   value: string;
   inputValue: string;
@@ -18,17 +20,57 @@ function Button({ value, setInput, inputValue }: IButtonProps) {
     return false;
   }
 
+  function handleNumberOrNotNumberAndOperatorClick() {
+    const lastInputCharacter = inputValue.charAt(inputValue.length - 1);
+
+    if (isNumberOrNotOperator() && value !== '.') {
+      setInput(inputValue + value);
+    }
+
+    if (value === 'C') setInput('');
+
+    if (
+      value === '.' &&
+      lastInputCharacter !== '.' &&
+      inputValue !== '' &&
+      !operators.includes(lastInputCharacter)
+    )
+      setInput(inputValue + value);
+  }
+
+  function handleOperatorClick() {
+    const lastInputCharacter = inputValue.charAt(inputValue.length - 1);
+    if (
+      operators.includes(lastInputCharacter) ||
+      lastInputCharacter === '.' ||
+      inputValue === ''
+    )
+      return;
+
+    setInput(inputValue + value);
+  }
+
   function isEqual() {
     if (value === '=') return true;
 
     return false;
   }
+
+  function handleEqualClick() {
+    if (!isNaN(Number(inputValue.charAt(inputValue.length - 1))).valueOf())
+      setInput(String(evaluate(inputValue)));
+
+    return;
+  }
+
   return isNumberOrNotOperator() ? (
-    <KeyNumber onClick={() => setInput(inputValue + value)}>{value}</KeyNumber>
+    <KeyNumber onClick={() => handleNumberOrNotNumberAndOperatorClick()}>
+      {value}
+    </KeyNumber>
   ) : isEqual() ? (
-    <Equal>{value}</Equal>
+    <Equal onClick={handleEqualClick}>{value}</Equal>
   ) : (
-    <Operator>{value}</Operator>
+    <Operator onClick={handleOperatorClick}>{value}</Operator>
   );
 }
 
